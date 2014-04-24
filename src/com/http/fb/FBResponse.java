@@ -31,7 +31,7 @@ public class FBResponse {
 	public FBResponse(BufferedReader reader) {
 		// TODO Auto-generated constructor stub
 		String line = null;
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		JSONObject responseJson;
 		try {
 			while ((line = reader.readLine()) != null) {
@@ -42,13 +42,14 @@ public class FBResponse {
 			e.printStackTrace();
 		}
 		String response = sb.toString();
+		
+		responseJson = null;		
 		responseJson = parseJSON(response);
 				
 		if(responseJson.containsKey("data")) {
 			success = new SuccessObject();
 			success.setData(responseJson.get("data"));
-		}
-		if(!responseJson.containsKey("error")) {
+		} else if(!responseJson.containsKey("error")) {
 			success = new SuccessObject();
 			success.setAccess_token( responseJson.get("access_token"));
 			success.setExpires_in( responseJson.get("expires_in"));
